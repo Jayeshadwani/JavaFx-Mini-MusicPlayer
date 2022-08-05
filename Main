@@ -1,0 +1,180 @@
+package application;
+
+import java.io.File;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+
+public class Main extends Application {
+
+//	Custom method: for creating media
+	
+	public MediaPlayer setMedia(int i) {
+		int j = i;
+
+
+		String[] song_path = new String[10];
+		song_path[0] = "C:\\Users\\Hello Tech\\Downloads\\Har Har Shambhu Ringtone_320(PagalWorld.com.se).mp3";
+		song_path[1] = "C:\\Users\\Hello Tech\\Downloads\\Kesariya(PagalWorld.com.se).mp3";
+		song_path[2] = "C:\\Users\\Hello Tech\\Downloads\\Dil Galti Kar Baitha Hai_64(PagalWorld.com.se).mp3";
+		song_path[3] = "C:\\Users\\Hello Tech\\Downloads\\Tu Hi Hai(PagalWorld.com.se).mp3";
+		song_path[4] = "C:\\Users\\Hello Tech\\Downloads\\Heal_64(PagalWorld.com.se).mp3";
+		song_path[5] = "C:\\Users\\Hello Tech\\Downloads\\Srivalli_64(PagalWorld.com.se).mp3";
+		song_path[6] = "C:\\Users\\Hello Tech\\Downloads\\Raatan Lambiyan_64(PagalWorld.com.se).mp3";
+		song_path[7] = "C:\\Users\\Hello Tech\\Downloads\\Let Me Down Slowly x Main Dhoondne Ko Zamaane Mein (Gravero Mashup)_64(PagalWorld.com.se).mp3";
+		song_path[8] = "C:\\Users\\Hello Tech\\Downloads\\KK Mashup (Tribute to KK) - Naresh Parmar_64(PagalWorld.com.se).mp3";
+		song_path[9] = "C:\\Users\\Hello Tech\\Downloads\\Arabic Kuthu_64(PagalWorld.com.se).mp3";
+
+		File selectFile = new File(song_path[j]);
+		Media media = new Media(selectFile.toURI().toString());
+		MediaPlayer mp3player = new MediaPlayer(media);
+
+		return mp3player;
+	}
+	
+//	Initialize object of mp3player
+
+	MediaPlayer mp3player = null;
+
+	
+//	Start method
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void start(Stage primaryStage) {
+
+//		Creating controls: 1. Heading
+		Label songlist = new Label("Tracks");
+		songlist.setFont(new Font("	Calibri Bold", 40));
+		songlist.setTextFill(Color.BLACK);
+
+// 		Creating labels for songs
+
+		Label lb1 = new Label("1. Har Har Shambhu");
+		lb1.setFont(new Font("Calibri", 22));
+
+		Label lb2 = new Label("2. Kesariya");
+		lb2.setFont(new Font("Calibri", 22));
+
+		Label lb3 = new Label("3. Dil Galti kar baitha hai");
+		lb3.setFont(new Font("Calibri", 22));
+
+		Label lb4 = new Label("4. Tu hi Hai");
+		lb4.setFont(new Font("Calibri", 22));
+
+		Label lb5 = new Label("5. Heal");
+		lb5.setFont(new Font("Calibri", 22));
+
+		Label lb6 = new Label("6. Srivalli");
+		lb6.setFont(new Font("Calibri", 22));
+
+		Label lb7 = new Label("7. Raatan Lambiyan");
+		lb7.setFont(new Font("Calibri", 22));
+
+		Label lb8 = new Label("8. Let Me Down Slowly x Main Dhoondne Ko Zamaane Mein (Gravero Mashup)");
+		lb8.setFont(new Font("Calibri", 22));
+
+		Label lb9 = new Label("9. KK Mashup (Tribute to KK)");
+		lb9.setFont(new Font("Calibri", 22));
+
+		Label lb10 = new Label("10. Arabic Kuthu");
+		lb10.setFont(new Font("Calibri", 22));
+
+		
+//		Adding songs to listView
+		ListView songs = new ListView();
+		songs.getItems().addAll(lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lb10);
+		songs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+
+////		Creating Play button
+		Button Play = new Button("Play/Pause");
+		Play.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				int i = songs.getSelectionModel().getSelectedIndex();
+				if(i == -1) {
+					i += 1;
+				}
+				System.out.println("Play Request: " + i);
+				if(mp3player == null) {
+					mp3player = setMedia(i);
+					mp3player.play();
+				}
+				else {
+					mp3player.stop();
+					mp3player = setMedia(i);
+					mp3player.play();
+				}
+			}
+		});
+
+		
+		
+//		Adding style to Play button
+		Play.setPrefSize(270, 30);
+		Play.setAlignment(Pos.CENTER);
+		Play.setBackground(new Background(new BackgroundFill(Color.ORANGE, CornerRadii.EMPTY, Insets.EMPTY)));
+		Play.setBorder(Border.stroke(Color.TRANSPARENT));
+		Play.setLayoutX(10);
+		Play.setLayoutY(10);
+		Play.setTextFill(Color.WHITESMOKE);
+		Play.setStyle("-fx-font-weight: bold");
+
+				
+		
+
+//    Adding controls to layout
+		GridPane box = new GridPane();
+		box.setPrefSize(500, 500);
+		box.setStyle("-fx-border:1;-fx-border-color:black;");
+		box.setVgap(10);
+		box.setHgap(10);
+		box.add(songlist, 0, 0);
+		box.add(songs, 0, 1);
+		box.add(Play, 0, 2);
+		
+//		Adding style to layout
+		
+		box.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		box.setPadding(new Insets(25, 25, 25, 25));
+		box.setStyle("-fx-selection-bar: orange; -fx-selection-bar-non-focused: salmon;");
+
+// 		Adding layout to Scene
+		
+		Scene sc = new Scene(box);
+
+// 		Adding scene to Stage
+		primaryStage.setScene(sc);
+		primaryStage.setHeight(500);
+		primaryStage.setWidth(500);
+		primaryStage.setTitle("Music Player");
+		primaryStage.show();
+
+
+	}
+
+	public static void main(String[] args) throws Exception {
+		launch(args);
+	}
+}
